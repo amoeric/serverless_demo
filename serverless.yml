@@ -22,24 +22,21 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   region: ap-northeast-1
   environment:
-    TABLE_NAME:
-      Ref: stores
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource:
-        - "Fn::GetAtt": [stores, Arn]
-
+    DYNAMODB_CUSTOMER_TABLE: ${self:service}-storeTable-${sls:stage}
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'dynamodb:PutItem'
+            - 'dynamodb:Get*'
+            - 'dynamodb:Scan*'
+            - 'dynamodb:UpdateItem'
+            - 'dynamodb:DeleteItem'
+          Resource: arn:aws:dynamodb:ap-northeast-1:533820445174:table/${self:service}-storeTable-${sls:stage}
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -77,26 +74,35 @@ provider:
 functions:
   getStores:
     handler: handlers/index.index
+    name: ${sls:stage}-Store-index
+    timeout: 30
+    memorySize: 128
     events:
-      - http:
-          path: stores
+      - httpApi:
+          path: /
           method: GET
-
+  createStore:
+    handler: handlers/create.create
+    name: ${sls:stage}-Store-create
+    timeout: 30
+    memorySize: 128
+    events:
+      - httpApi:
+          path: /
+          method: POST
 resources:
   Resources:
-    stores:
+    StoreTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: stores
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: primary_key
             AttributeType: S
+        BillingMode: PAY_PER_REQUEST
         KeySchema:
-          - AttributeName: id
+          - AttributeName: primary_key
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        TableName: ${self:service}-storeTable-${sls:stage}
         # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-table-provisionedthroughput.html
 
 #    The following are a few example events you can configure
