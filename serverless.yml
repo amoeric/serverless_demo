@@ -79,7 +79,7 @@ functions:
     memorySize: 128
     events:
       - httpApi:
-          path: /
+          path: /stores
           method: GET
   createStore:
     handler: handlers/create.create
@@ -88,8 +88,22 @@ functions:
     memorySize: 128
     events:
       - httpApi:
-          path: /
+          path: /stores
           method: POST
+  deleteStore:
+    handler: handlers/delete.delete
+    name: ${sls:stage}-Store-delete
+    timeout: 30
+    memorySize: 128
+    events:
+      - httpApi:
+          path: /store/{name}
+          method: DELETE
+          request:
+            parameters:
+              paths:
+                name: true
+
 resources:
   Resources:
     StoreTable:
