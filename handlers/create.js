@@ -1,7 +1,7 @@
 'use strict';
 const AWS = require('aws-sdk');
 
-module.exports.create = async (event) => {
+module.exports.create = async (event, context, callback) => {
   const dynamoDb = new AWS.DynamoDB.DocumentClient();
   const body = JSON.parse(Buffer.from(event.body, 'base64').toString());
 
