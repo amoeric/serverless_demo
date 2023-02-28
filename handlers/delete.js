@@ -15,6 +15,7 @@ module.exports.delete = async (event) => {
     .promise();
 
   return {
-    statusCode: 200
+    statusCode: 200,
+    body: JSON.stringify({ message: `${toBeRemovedName} has been deleted.` })
   };
 };

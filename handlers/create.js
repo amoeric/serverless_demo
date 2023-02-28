@@ -2,8 +2,9 @@
 const AWS = require('aws-sdk');
 
 module.exports.create = async (event, context, callback) => {
+  console.log('event'+ JSON.parse(event.body))
   const dynamoDb = new AWS.DynamoDB.DocumentClient();
-  const body = JSON.parse(Buffer.from(event.body, 'base64').toString());
+  const body = JSON.parse(event.body);
 
   const putParams = {
     TableName: process.env.DYNAMODB_CUSTOMER_TABLE,

@@ -81,7 +81,7 @@ functions:
     # environment:
     #   FONTCONFIG_PATH: /opt/lib/fonts
     events:
-      - httpApi:
+      - http:
           path: /stores
           method: GET
   createStore:
@@ -90,7 +90,7 @@ functions:
     timeout: 30
     memorySize: 128
     events:
-      - httpApi:
+      - http:
           path: /stores
           method: POST
   deleteStore:
@@ -99,7 +99,7 @@ functions:
     timeout: 30
     memorySize: 128
     events:
-      - httpApi:
+      - http:
           path: /store/{name}
           method: DELETE
           request:
