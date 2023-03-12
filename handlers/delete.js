@@ -9,7 +9,7 @@ module.exports.delete = async (event) => {
     .delete({
       TableName: process.env.DYNAMODB_CUSTOMER_TABLE,
       Key: {
-        primary_key: toBeRemovedName,
+        name: toBeRemovedName,
       },
     })
     .promise();

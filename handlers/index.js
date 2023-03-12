@@ -21,7 +21,7 @@ module.exports.index = async (event) => {
       total: result.Count,
       items: await result.Items.map((store) => {
         return {
-	  name: store.primary_key,
+          name: store.name,
           url: store.url,
         };
       }),

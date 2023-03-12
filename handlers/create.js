@@ -9,7 +9,7 @@ module.exports.create = async (event, context, callback) => {
   const putParams = {
     TableName: process.env.DYNAMODB_CUSTOMER_TABLE,
     Item: {
-      primary_key: body.name,
+      name: body.name,
       url: body.url,
     },
   };
