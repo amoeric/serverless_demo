@@ -37,12 +37,21 @@ provider:
             - 'dynamodb:UpdateItem'
             - 'dynamodb:DeleteItem'
           Resource: arn:aws:dynamodb:ap-northeast-1:533820445174:table/${self:service}-storeTable-${sls:stage}
+  # ecr:
+  #   # In this section you can define images that will be built locally and uploaded to ECR
+  #   images:
+  #     appimage:
+  #       path: ./
 functions:
   getStores:
     handler: handlers/index.index
     name: ${sls:stage}-Store-index
     timeout: 30
     memorySize: 128
+    # image:
+    #   name: appimage
+    #   command:
+    #     - handlers/index.index
     # layer path example
     # environment:
     #   FONTCONFIG_PATH: /opt/lib/fonts
@@ -55,6 +64,10 @@ functions:
     name: ${sls:stage}-Store-create
     timeout: 30
     memorySize: 128
+    # image:
+    #   name: appimage
+    #   command:
+    #     - handlers/create.create
     events:
       - http:
           path: /stores
@@ -64,6 +77,10 @@ functions:
     name: ${sls:stage}-Store-delete
     timeout: 30
     memorySize: 128
+    # image:
+    #   name: appimage
+    #   command:
+    #     - handlers/delete.delete
     events:
       - http:
           path: /store/{name}

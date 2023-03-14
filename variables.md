@@ -28,20 +28,5 @@ provider:
   environment:
     ${file(./environments.yml)}
 
-### ${cf:another-service-dev.functionPrefix}
-functions:
-  hello:
-    name: ${cf:another-service-dev.functionPrefix}-hello
-    handler: handler.hello
-custom:
-  functionPrefix: 'my-prefix-'
-resources:
-  Outputs:
-    functionPrefix:
-      Value: ${self:custom.functionPrefix}
-      Export:
-        Name: functionPrefix
-
-
 - [官方文件看更多用法](https://www.serverless.com/framework/docs/providers/aws/guide/variables)
 - [鐵人賽 -> Serverless Framework](https://ithelp.ithome.com.tw/articles/10304188?sc=iThelpR)
